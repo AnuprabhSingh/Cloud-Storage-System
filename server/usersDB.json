@@ -1,0 +1,23 @@
+[
+    {
+        "id": "6debad35-f403-4d1d-ab03-f03f469309f9",
+        "name": "ANUPRABH SINGH",
+        "email": "anuprabh.2004@gmail.com",
+        "password": "anu",
+        "rootDirId": "d64549b0-ead5-4a5d-bf2b-6aa7ca0ace24"
+    },
+    {
+        "id": "9a783ed0-9caa-48f3-8a44-1e81e1119621",
+        "name": "anuprabh",
+        "email": "as22ecb0b06@student.nitw.ac.in",
+        "password": "ash",
+        "rootDirId": "30a4a0d4-0ad3-4d63-9052-7513d2b706c9"
+    },
+    {
+        "id": "86f495eb-8bd1-4937-9d93-626f9ba81f92",
+        "name": "Gopaluni Sreevignesh",
+        "email": "sreevg16@gmail.com",
+        "password": "vignesh123",
+        "rootDirId": "83ed193e-0968-4197-8acb-c99a4550da66"
+    }
+]

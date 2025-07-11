@@ -1,0 +1,20 @@
+[
+    {
+        "id": "146b2403-51c8-4394-a1a4-60a141a76e90",
+        "extension": ".jpeg",
+        "name": "photo.jpeg",
+        "parentDirId": "cdff62fd-c4e9-4b89-a800-9d6e4077235d"
+    },
+    {
+        "id": "e2285f1f-1833-4b7c-a8b2-ef0e059f0c54",
+        "extension": ".pptx",
+        "name": "FPGA_QPSK_ISRO_Final1.pptx",
+        "parentDirId": "83ed193e-0968-4197-8acb-c99a4550da66"
+    },
+    {
+        "id": "1908cf60-44ba-4e8a-b14f-e9c9886c9db2",
+        "extension": ".pptx",
+        "name": "FPGA_QPSK_ISRO_Presentation.pptx",
+        "parentDirId": "d67f127f-0464-41e4-87d6-5e9f7a10b7d5"
+    }
+]

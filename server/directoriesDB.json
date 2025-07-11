@@ -1,0 +1,52 @@
+[
+    {
+        "id": "d64549b0-ead5-4a5d-bf2b-6aa7ca0ace24",
+        "name": "root-anuprabh.2004@gmail.com",
+        "userId": "6debad35-f403-4d1d-ab03-f03f469309f9",
+        "parentDirId": null,
+        "files": [],
+        "directories": [
+            "cdff62fd-c4e9-4b89-a800-9d6e4077235d"
+        ]
+    },
+    {
+        "id": "30a4a0d4-0ad3-4d63-9052-7513d2b706c9",
+        "name": "root-as22ecb0b06@student.nitw.ac.in",
+        "userId": "9a783ed0-9caa-48f3-8a44-1e81e1119621",
+        "parentDirId": null,
+        "files": [],
+        "directories": []
+    },
+    {
+        "id": "cdff62fd-c4e9-4b89-a800-9d6e4077235d",
+        "name": "anuprabh",
+        "parentDirId": "d64549b0-ead5-4a5d-bf2b-6aa7ca0ace24",
+        "files": [
+            "146b2403-51c8-4394-a1a4-60a141a76e90"
+        ],
+        "userId": "6debad35-f403-4d1d-ab03-f03f469309f9",
+        "directories": []
+    },
+    {
+        "id": "83ed193e-0968-4197-8acb-c99a4550da66",
+        "name": "root-sreevg16@gmail.com",
+        "userId": "86f495eb-8bd1-4937-9d93-626f9ba81f92",
+        "parentDirId": null,
+        "files": [
+            "e2285f1f-1833-4b7c-a8b2-ef0e059f0c54"
+        ],
+        "directories": [
+            "d67f127f-0464-41e4-87d6-5e9f7a10b7d5"
+        ]
+    },
+    {
+        "id": "d67f127f-0464-41e4-87d6-5e9f7a10b7d5",
+        "name": "New Folder",
+        "parentDirId": "83ed193e-0968-4197-8acb-c99a4550da66",
+        "files": [
+            "1908cf60-44ba-4e8a-b14f-e9c9886c9db2"
+        ],
+        "userId": "86f495eb-8bd1-4937-9d93-626f9ba81f92",
+        "directories": []
+    }
+]
