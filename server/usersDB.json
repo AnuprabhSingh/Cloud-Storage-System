@@ -19,5 +19,12 @@
         "email": "sreevg16@gmail.com",
         "password": "vignesh123",
         "rootDirId": "83ed193e-0968-4197-8acb-c99a4550da66"
+    },
+    {
+        "id": "adc8f54b-cf84-4086-bbc3-d5f512f9a10b",
+        "name": "Anuprabh",
+        "email": "anu@gnail.com",
+        "password": "asd",
+        "rootDirId": "090294d4-47ce-4531-a80a-c7d725bdd0f2"
     }
 ]

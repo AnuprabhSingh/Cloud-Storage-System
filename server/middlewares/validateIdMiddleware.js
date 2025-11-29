@@ -1,6 +1,9 @@
+import { ObjectId } from "mongodb"
+
 export default function (req,res,next,id){
-    if(id.length !== 36){
-      return res.status(400).json({error: `Invalid ${id}`})
+    // mogodb ObjectId validation
+    if(!ObjectId.isValid(id)){
+        return res.status(400).json({message: "Invalid ID format"})
     }
     next()
   }
