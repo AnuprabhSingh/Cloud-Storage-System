@@ -8,6 +8,8 @@ export async function connectDB(){
     return db;
 }
 
+export { client };
+
 process.on("SIGINT", async () => {
     await client.close();
     console.log("Database Disconnected !");

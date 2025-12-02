@@ -81,11 +81,13 @@ router.post("/register", async (req, res) => {
   });
 }
   catch(err){
-    console.error("Registration error:", err);
-    return res.status(500).json({
-      message: "Something went wrong",
-      error: err?.message,
-    });
+    if(err.code===121){
+      console.log("hello");
+      return res.status(400).json({error: "Data validation failed. Please check your input."})
+    }
+    else{
+      next(err);
+    }
   }
 });
 

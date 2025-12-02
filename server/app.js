@@ -5,7 +5,7 @@ import fileRoute from './routes/fileRoute.js';
 import directoryRoute from './routes/directoryRoute.js';
 import userRoutes from './routes/userRoutes.js';
 import CheckAuth from './middlewares/authMiddleware.js';
-import { connectDB } from './db.js';
+import { connectDB } from './config/db.js';
 
 
 try{
@@ -25,7 +25,7 @@ app.use(express.json())
 
 app.use((err,req,res,next)=>{
     res.status(err.status|| 500).json({
-        message: "something went wrong",
+        error: "something went wrong!!!",
     })
 }
 )
