@@ -4,6 +4,7 @@ import directoriesData from "../directoriesDB.json" with {type: "json"};
 import usersData from "../usersDB.json" with {type: "json"};
 import CheckAuth from "../middlewares/authMiddleware.js";
 import { ObjectId } from "mongodb";
+import { client } from "../config/db.js";
 
 
 const router = express.Router();
@@ -47,19 +48,23 @@ router.post("/register", async (req, res) => {
   // };
   // usersData.push(newUser);
 
+  const session = client.startSession();
+
+
   try{
   // await writeFile("./usersDB.json", JSON.stringify(usersData));
   // await writeFile("./directoriesDB.json", JSON.stringify(directoriesData));
   const rootDirId = new ObjectId();
   const userId = new ObjectId();
-
+  
+   session.startTransaction();
   const dirCollection = db.collection("directories");
      await dirCollection.insertOne({
       _id: rootDirId,
       name: `root-${email}`,
       parentDirId: null,
       userId: userId
-    })
+    }, { session })
 
   await db.collection("users").insertOne({
     _id: userId,
@@ -67,8 +72,8 @@ router.post("/register", async (req, res) => {
     email,
     password,
     rootDirId: rootDirId,
-  });
-
+  }, { session });
+  await session.commitTransaction();
 
   return res.status(201).json({
     message: "User Created",
@@ -81,6 +86,9 @@ router.post("/register", async (req, res) => {
   });
 }
   catch(err){
+    if (session.inTransaction()) {
+      await session.abortTransaction();
+    }
     if(err.code===121){
       console.log("hello");
       return res.status(400).json({error: "Data validation failed. Please check your input."})
@@ -88,6 +96,9 @@ router.post("/register", async (req, res) => {
     else{
       next(err);
     }
+  }
+  finally {
+    await session.endSession();
   }
 });
 

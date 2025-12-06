@@ -1,5 +1,5 @@
 import { MongoClient } from "mongodb";
-const client = new MongoClient("mongodb://localhost:27017/StorageApp");
+const client = new MongoClient("mongodb://anuprabh:anu@localhost:27017/StorageApp?replicaSet=myReplicaSet");
 
 export async function connectDB(){
     await client.connect();
