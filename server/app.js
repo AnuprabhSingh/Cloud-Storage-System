@@ -6,6 +6,7 @@ import directoryRoute from './routes/directoryRoute.js';
 import userRoutes from './routes/userRoutes.js';
 import CheckAuth from './middlewares/authMiddleware.js';
 import { connectDB } from './config/db.js';
+import "./config/mongoose.js"
 
 
 try{

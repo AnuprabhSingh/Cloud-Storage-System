@@ -1,6 +1,6 @@
 import { ObjectId } from 'mongodb';
 import { rm } from 'fs/promises';
-
+import Directory from '../models/directoryModels.js';
 
 export const getDirectoryById = async (req, res) => {
     try {
@@ -10,7 +10,7 @@ export const getDirectoryById = async (req, res) => {
       const user = req.user
       const _id = req.params.id ? new ObjectId(req.params.id) : user.rootDirId;
       // const directoryData = directoriesData.find((directory) => directory.id === id && directory.userId === user.id);
-      const directoryData  = await db.collection("directories").findOne({_id: _id});
+      const directoryData  = await Directory.findOne({_id}).lean();
       // console.log(directoryData);
       if (!directoryData) {
         return res.status(404).json({ error: "Directory not found or you do not have access to it!" });
@@ -26,7 +26,7 @@ export const getDirectoryById = async (req, res) => {
       //   .map(({ id, name }) => ({ id, name }));
 
       const files = await db.collection("files").find({parentDirId: directoryData._id}).toArray();
-      const directories = await db.collection("directories").find({parentDirId: _id}).toArray();
+      const directories = await Directory.find({parentDirId: _id}).lean();
   
       return res.json({ 
         ...directoryData, 
