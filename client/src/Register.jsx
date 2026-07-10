@@ -3,7 +3,7 @@ import { useNavigate, Link } from "react-router-dom";
 import "./Auth.css";
 
 const Register = () => {
-  const BASE_URL = "http://localhost:80";
+  const BASE_URL = "http://192.168.29.242:80";
 
   const [formData, setFormData] = useState({
     name: "",
