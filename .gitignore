@@ -8,6 +8,10 @@ client/dist/
 client/build/
 *.log
 
+# Vite cache
+.vite/
+**/.vite/
+
 # Environment variables
 .env
 .env.local
