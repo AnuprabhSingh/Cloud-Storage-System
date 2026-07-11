@@ -1,8 +1,12 @@
 import {Schema, model} from 'mongoose';
 
-const directorySchema = new Schema({
+const fileSchema = new Schema({
 
     name:{
+        type: String,
+        required: true
+    },
+    extension:{
         type: String,
         required: true
     },
@@ -13,16 +17,14 @@ const directorySchema = new Schema({
     },
     parentDirId:{
         type: Schema.Types.ObjectId,
-        ref: "Directory",
-        default: null
+        ref: "Directory"
     }
 },
 {
-    strict: "throw",
-    versionKey: false
+    strict: "throw"
 }
 )
 
-const Directory = model("Directory", directorySchema);
+const File = model("File", fileSchema);
 
-export default Directory;
+export default File;
