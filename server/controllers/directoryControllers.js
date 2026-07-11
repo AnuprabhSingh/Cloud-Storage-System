@@ -115,6 +115,7 @@ export const getDirectoryById = async (req, res) => {
     // const fileCollection = db.collection("files");
 
     // need to use recursion to delete all subdirectories and files
+    try{
     async function deleteDirectoryRecursively(dirId) {
       // Find all subdirectories
       const subDirs = await Directory.find({ parentDirId: dirId, userId: user._id }).lean();
@@ -134,6 +135,10 @@ export const getDirectoryById = async (req, res) => {
       // Finally, delete the directory itself
       await Directory.deleteOne({ _id: dirId, userId: user._id });
     }
+  }
+  catch (err) {
+    next(err);
+  }
   
     try {
       const dirData = await Directory.findOne({ _id:id, userId: user._id }).select('_id').lean();
