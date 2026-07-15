@@ -8,9 +8,9 @@ export const registerUser = async (req, res, next) => {
   // const db = req.db;
 
   const existingUser = await User.findOne({ email }).lean();
-  if (existingUser) {
-    return res.status(409).json({ message: "User already exists" });
-  }
+  // if (existingUser) {
+  //   return res.status(409).json({ message: "User already exists" });
+  // }
 
   const session = await mongoose.startSession();
 
@@ -59,7 +59,14 @@ export const registerUser = async (req, res, next) => {
     if (err.code === 121) {
       return res.status(400).json({ error: "Data validation failed. Please check your input." });
     }
+    else if(err.code === 11000){
+      if(err.KeyValue.email){
+        return res.status(409).json({ message: "User already exists" });
+      }
+    }
+    else{
     next(err);
+    }
   } finally {
     await session.endSession();
   }
