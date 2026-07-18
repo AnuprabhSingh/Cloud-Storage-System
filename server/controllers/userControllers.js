@@ -2,6 +2,10 @@
 import Directory from "../models/directoryModels.js";
 import User from "../models/UserModel.js";
 import mongoose, { Schema } from "mongoose";
+import crypto from "crypto"
+import { buffer } from "stream/consumers";
+
+export const secretKey = "anuprabh"
 
 export const registerUser = async (req, res, next) => {
   const { name, email, password } = req.body;
@@ -80,13 +84,17 @@ export const loginUser = async (req, res) => {
     return res.status(401).json({ message: "Invalid credentials" });
   }
 
-  const cookiePayload = {
+  const cookiePayload = JSON.stringify({
     id: user._id.toString(),
     expiry: Math.round(Date.now()/1000 + 10).toString()
-  }
+  })
   // console.log(cookiePayload);
 
-  res.cookie("uid", Buffer.from(JSON.stringify(cookiePayload)).toString("base64url"),  {
+  const signature = crypto.createHash("sha256").update(secretKey).update(cookiePayload).update(secretKey).digest("base64url")
+  //basically this is not signature but a hmac. there is btter method to generate hmac as crypto.createHmac("sha256",secretKey).update(path).digest("hex")
+
+  const signedCookiePayload = `${Buffer.from(cookiePayload).toString("base64url")}.${signature}`
+  res.cookie("token", signedCookiePayload,  {
     httpOnly: true,
     sameSite: "Lax",
     maxAge: 24 * 60 * 60 * 1000 * 7, // 7 day
@@ -102,6 +110,6 @@ export const getCurrentUser = (req, res) => {
 };
 
 export const logoutUser = (req, res) => {
-  res.clearCookie("uid");
+  res.clearCookie("token");
   res.status(201).end();
 };
