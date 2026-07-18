@@ -10,10 +10,10 @@ import { connectDB } from './config/db.js';
 
     await connectDB();
 // console.log(db.databaseName);
-
+const secretKey = "anuprabh"
 const app = express();
 
-app.use(cookieParser());
+app.use(cookieParser(secretKey));
 
 app.use(cors(
     {origin: ["http://localhost:5173", "http://192.168.29.242:5173"],
