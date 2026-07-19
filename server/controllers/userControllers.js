@@ -11,6 +11,8 @@ export const registerUser = async (req, res, next) => {
   const { name, email, password } = req.body;
   // const db = req.db;
 
+  const hashedPassword = crypto.createHash("sha256").update(password).digest("hex")
+
   const existingUser = await User.findOne({ email }).lean();
   // if (existingUser) {
   //   return res.status(409).json({ message: "User already exists" });
@@ -39,7 +41,7 @@ export const registerUser = async (req, res, next) => {
         _id: userId,
         name,
         email,
-        password,
+        password : hashedPassword,
         rootDirId: rootDirId,
       },
       { session }
@@ -79,8 +81,13 @@ export const registerUser = async (req, res, next) => {
 export const loginUser = async (req, res) => {
   const { email, password } = req.body;
   // const db = req.db;
-  const user = await User.findOne({ email, password });
+  const user = await User.findOne({ email});
   if (!user) {
+    return res.status(401).json({ message: "Invalid credentials" });
+  }
+
+  const enteredPasswordhash = crypto.createHash("sha256").update(password).digest("hex")
+  if(enteredPasswordhash !== user.password ){
     return res.status(401).json({ message: "Invalid credentials" });
   }
 

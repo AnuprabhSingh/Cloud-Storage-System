@@ -4,7 +4,7 @@ import crypto from "crypto"
 // import { ObjectId } from "mongodb";
 export default async function CheckAuth(req,res,next){
 
-  console.log(req.signedCookies);
+  // console.log(req.signedCookies);
     const { token } = req.signedCookies;
     if (!token) {
       res.clearCookie("token")
