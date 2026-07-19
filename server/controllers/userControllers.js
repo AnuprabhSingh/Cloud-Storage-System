@@ -4,6 +4,7 @@ import User from "../models/UserModel.js";
 import mongoose, { Schema } from "mongoose";
 import crypto, { pbkdf2, pbkdf2Sync, sign } from "crypto"
 import { buffer } from "stream/consumers";
+import bcrypt from "bcrypt"
 
 // export const secretKey = "anuprabh"
 
@@ -12,8 +13,10 @@ export const registerUser = async (req, res, next) => {
   // const db = req.db;
 
   // const hashedPassword = crypto.createHash("sha256").update(password).digest("hex") // basic hashing using hmac
-  const salt = crypto.randomBytes(16)
-  const hashedPassword = pbkdf2Sync(password,salt,100000,32,"sha256")
+  // const salt = crypto.randomBytes(16)
+  // const hashedPassword = pbkdf2Sync(password,salt,100000,32,"sha256")
+  // const salt = await bcrypt.genSalt(12)
+  const hashedPassword = await bcrypt.hash(password,12)
 
   const existingUser = await User.findOne({ email }).lean();
   // if (existingUser) {
@@ -43,7 +46,7 @@ export const registerUser = async (req, res, next) => {
         _id: userId,
         name,
         email,
-        password : `${salt.toString("base64url")}.${hashedPassword.toString("base64url")}`,
+        password : hashedPassword,
         rootDirId: rootDirId,
       },
       { session }
@@ -89,12 +92,14 @@ export const loginUser = async (req, res) => {
   }
 
   // const enteredPasswordhash = crypto.createHash("sha256").update(password).digest("hex")
-  const [salt , savedHashedPassword] = user.password.split('.')
-  const enteredPasswordhash = pbkdf2Sync(password,Buffer.from(salt,"base64url"),100000,32,"sha256").toString("base64url")
+  // const [salt , savedHashedPassword] = user.password.split('.')
+  // const enteredPasswordhash = pbkdf2Sync(password,Buffer.from(salt,"base64url"),100000,32,"sha256").toString("base64url")
   // console.log(enteredPasswordhash);
   // console.log(savedHashedPassword);
 
-  if(enteredPasswordhash !== savedHashedPassword ){
+  const isPasswordValid = await bcrypt.compare(password,user.password)
+
+  if(!isPasswordValid){
     return res.status(401).json({ message: "Invalid credentials" });
   }
 
