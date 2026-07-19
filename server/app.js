@@ -5,11 +5,10 @@ import fileRoute from './routes/fileRoute.js';
 import directoryRoute from './routes/directoryRoute.js';
 import userRoutes from './routes/userRoutes.js';
 import CheckAuth from './middlewares/authMiddleware.js';
+// import { connectDB } from './config/db.js';
 import { connectDB } from './config/db.js';
 
-
-try{
-    const db = await connectDB();
+    await connectDB();
 // console.log(db.databaseName);
 
 const app = express();
@@ -30,10 +29,10 @@ app.use((err,req,res,next)=>{
 }
 )
 
-app.use((req, res, next) => {
-    req.db = db;  // Share the single DB connection
-    next();
-});
+// app.use((req, res, next) => {
+//     req.db = db;  // Share the single DB connection
+//     next();
+// });
 
 app.use("/directory",CheckAuth ,directoryRoute)
 app.use("/user",userRoutes)
@@ -47,7 +46,4 @@ app.listen(80,'::',()=>{
     console.log("Server is running on port 80");
 })
 
-}
-catch(err){
-    console.error("Failed to connect to the database", err);
-}
+

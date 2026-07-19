@@ -1,24 +1,26 @@
-import { ObjectId } from "mongodb";
-import { client } from "../config/db.js";
+// import { client } from "../config/db.js";
+import Directory from "../models/directoryModels.js";
+import User from "../models/UserModel.js";
+import mongoose, { Schema } from "mongoose";
 
 export const registerUser = async (req, res, next) => {
   const { name, email, password } = req.body;
-  const db = req.db;
+  // const db = req.db;
 
-  const existingUser = await db.collection("users").findOne({ email });
-  if (existingUser) {
-    return res.status(409).json({ message: "User already exists" });
-  }
+  const existingUser = await User.findOne({ email }).lean();
+  // if (existingUser) {
+  //   return res.status(409).json({ message: "User already exists" });
+  // }
 
-  const session = client.startSession();
+  const session = await mongoose.startSession();
 
   try {
-    const rootDirId = new ObjectId();
-    const userId = new ObjectId();
+    const rootDirId = new mongoose.Types.ObjectId();
+    const userId = new mongoose.Types.ObjectId();
 
     session.startTransaction();
-    const dirCollection = db.collection("directories");
-    await dirCollection.insertOne(
+    // const dirCollection = db.collection("directories");
+    await Directory.insertOne(
       {
         _id: rootDirId,
         name: `root-${email}`,
@@ -28,7 +30,7 @@ export const registerUser = async (req, res, next) => {
       { session }
     );
 
-    await db.collection("users").insertOne(
+    await User.insertOne(
       {
         _id: userId,
         name,
@@ -51,12 +53,20 @@ export const registerUser = async (req, res, next) => {
     });
   } catch (err) {
     if (session.inTransaction()) {
+     console.dir(err.errorResponse.errInfo.details, { depth: null });
       await session.abortTransaction();
     }
     if (err.code === 121) {
       return res.status(400).json({ error: "Data validation failed. Please check your input." });
     }
+    else if(err.code === 11000){
+      if(err.KeyValue.email){
+        return res.status(409).json({ message: "User already exists" });
+      }
+    }
+    else{
     next(err);
+    }
   } finally {
     await session.endSession();
   }
@@ -64,8 +74,8 @@ export const registerUser = async (req, res, next) => {
 
 export const loginUser = async (req, res) => {
   const { email, password } = req.body;
-  const db = req.db;
-  const user = await db.collection("users").findOne({ email, password });
+  // const db = req.db;
+  const user = await User.findOne({ email, password });
   if (!user) {
     return res.status(401).json({ message: "Invalid credentials" });
   }
