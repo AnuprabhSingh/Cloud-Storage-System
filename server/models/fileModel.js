@@ -22,7 +22,7 @@ const fileSchema = new Schema({
 },
 {
     strict: "throw",
-    versionKey: false
+    // versionKey: false
 }
 )
 

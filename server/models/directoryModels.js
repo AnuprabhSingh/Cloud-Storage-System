@@ -19,7 +19,7 @@ const directorySchema = new Schema({
 },
 {
     strict: "throw",
-    versionKey: false
+    // versionKey: false
 }
 )
 

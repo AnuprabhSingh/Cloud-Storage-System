@@ -1,7 +1,10 @@
-import { connectDB, client } from "./db.js";
+import mongoose from "mongoose";
+import { connectDB } from "./db.js";
 
+await connectDB();
+const client = mongoose.connection.getClient()
 try {
-  const db = await connectDB();
+  const db = mongoose.connection.db
 
   const command = "collMod";
 
@@ -28,7 +31,7 @@ try {
           },
           password: {
             bsonType: "string",
-            minLength: 4,
+            minLength: 3,
           },
           rootDirId: {
             bsonType: "objectId",
@@ -88,7 +91,7 @@ try {
             bsonType: "objectId",
           },
           parentDirId: {
-            bsonType: ["objectId", "null"],
+            bsonType: "objectId",
           },
         },
         additionalProperties: false,
