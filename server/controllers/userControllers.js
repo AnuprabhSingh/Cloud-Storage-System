@@ -2,7 +2,7 @@
 import Directory from "../models/directoryModels.js";
 import User from "../models/UserModel.js";
 import mongoose, { Schema } from "mongoose";
-import crypto, { sign } from "crypto"
+import crypto, { pbkdf2, pbkdf2Sync, sign } from "crypto"
 import { buffer } from "stream/consumers";
 
 // export const secretKey = "anuprabh"
@@ -11,7 +11,9 @@ export const registerUser = async (req, res, next) => {
   const { name, email, password } = req.body;
   // const db = req.db;
 
-  const hashedPassword = crypto.createHash("sha256").update(password).digest("hex")
+  // const hashedPassword = crypto.createHash("sha256").update(password).digest("hex") // basic hashing using hmac
+  const salt = crypto.randomBytes(16)
+  const hashedPassword = pbkdf2Sync(password,salt,100000,32,"sha256")
 
   const existingUser = await User.findOne({ email }).lean();
   // if (existingUser) {
@@ -41,7 +43,7 @@ export const registerUser = async (req, res, next) => {
         _id: userId,
         name,
         email,
-        password : hashedPassword,
+        password : `${salt.toString("base64url")}.${hashedPassword.toString("base64url")}`,
         rootDirId: rootDirId,
       },
       { session }
@@ -86,8 +88,13 @@ export const loginUser = async (req, res) => {
     return res.status(401).json({ message: "Invalid credentials" });
   }
 
-  const enteredPasswordhash = crypto.createHash("sha256").update(password).digest("hex")
-  if(enteredPasswordhash !== user.password ){
+  // const enteredPasswordhash = crypto.createHash("sha256").update(password).digest("hex")
+  const [salt , savedHashedPassword] = user.password.split('.')
+  const enteredPasswordhash = pbkdf2Sync(password,Buffer.from(salt,"base64url"),100000,32,"sha256").toString("base64url")
+  // console.log(enteredPasswordhash);
+  // console.log(savedHashedPassword);
+
+  if(enteredPasswordhash !== savedHashedPassword ){
     return res.status(401).json({ message: "Invalid credentials" });
   }
 
